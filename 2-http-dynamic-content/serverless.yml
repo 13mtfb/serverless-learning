@@ -13,6 +13,8 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    KEY: rando
 
 # The `functions` block defines what code to deploy
 functions:
@@ -25,6 +27,8 @@ functions:
           method: get
   pathParamsExample:
     handler: handler.pathParamsExample
+    environment:
+      FOO: bar
     events:
       - http:
           path: /

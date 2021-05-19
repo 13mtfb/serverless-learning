@@ -167,13 +167,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/using-dynamic-content/dev/1621386632587-2021-05-19T01:10:32.587Z/using-dynamic-content.zip"
+          "S3Key": "serverless/using-dynamic-content/dev/1621387178056-2021-05-19T01:19:38.056Z/using-dynamic-content.zip"
         },
         "Handler": "handler.queryParamsExample",
         "Runtime": "nodejs12.x",
         "FunctionName": "using-dynamic-content-dev-queryParamsExample",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "KEY": "rando"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -192,13 +197,19 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/using-dynamic-content/dev/1621386632587-2021-05-19T01:10:32.587Z/using-dynamic-content.zip"
+          "S3Key": "serverless/using-dynamic-content/dev/1621387178056-2021-05-19T01:19:38.056Z/using-dynamic-content.zip"
         },
         "Handler": "handler.pathParamsExample",
         "Runtime": "nodejs12.x",
         "FunctionName": "using-dynamic-content-dev-pathParamsExample",
         "MemorySize": 1024,
         "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "KEY": "rando",
+            "FOO": "bar"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -210,24 +221,24 @@
         "PathParamsExampleLogGroup"
       ]
     },
-    "QueryParamsExampleLambdaVersionZ3lbuLTeNHZBqj9IQjN63Ise9wBPupvx4ImtLjA9Js": {
+    "QueryParamsExampleLambdaVersions8crS0BpMtZvMa2uFJIKEs2Kz4QTLtqPr91OuV68B0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "QueryParamsExampleLambdaFunction"
         },
-        "CodeSha256": "wGlr8uN+344wWVZbXd4aLnay6hNWvijz62hfsoHCBE8="
+        "CodeSha256": "LhZ+vmLPSNgaCkYroPd3JLtweIZyJa5FJL06LMBaQ94="
       }
     },
-    "PathParamsExampleLambdaVersiondENXmFaEGHSnunUad5SrH6NGtoGZ92RAvWIuABJn40": {
+    "PathParamsExampleLambdaVersionhOhncVypvUdnl2r8Ktm7j6Xlkksf9pwqItsvjU9Iw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "PathParamsExampleLambdaFunction"
         },
-        "CodeSha256": "wGlr8uN+344wWVZbXd4aLnay6hNWvijz62hfsoHCBE8="
+        "CodeSha256": "LhZ+vmLPSNgaCkYroPd3JLtweIZyJa5FJL06LMBaQ94="
       }
     },
     "ApiGatewayRestApi": {
@@ -497,7 +508,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1621386630578": {
+    "ApiGatewayDeployment1621387176151": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -600,7 +611,7 @@
     "QueryParamsExampleLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "QueryParamsExampleLambdaVersionZ3lbuLTeNHZBqj9IQjN63Ise9wBPupvx4ImtLjA9Js"
+        "Ref": "QueryParamsExampleLambdaVersions8crS0BpMtZvMa2uFJIKEs2Kz4QTLtqPr91OuV68B0"
       },
       "Export": {
         "Name": "sls-using-dynamic-content-dev-QueryParamsExampleLambdaFunctionQualifiedArn"
@@ -609,7 +620,7 @@
     "PathParamsExampleLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "PathParamsExampleLambdaVersiondENXmFaEGHSnunUad5SrH6NGtoGZ92RAvWIuABJn40"
+        "Ref": "PathParamsExampleLambdaVersionhOhncVypvUdnl2r8Ktm7j6Xlkksf9pwqItsvjU9Iw"
       },
       "Export": {
         "Name": "sls-using-dynamic-content-dev-PathParamsExampleLambdaFunctionQualifiedArn"

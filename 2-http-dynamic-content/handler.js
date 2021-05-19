@@ -61,6 +61,6 @@ function generateHtmlPage(content) {
 
 /* Utility function for rendering hello message HTML */
 function greetPerson(name) {
-  const userName = name || 'Unknown Person!'
+  const userName = name || process.env.FOO
   return `<p>Hey ${userName}!</p>`
 }
