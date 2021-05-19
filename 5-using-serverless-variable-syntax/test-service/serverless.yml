@@ -14,7 +14,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   environment:
-    MY_SECRET: ${secrets.json:MY_SECRET}
+    MY_SECRET: ${file(secrets.json):MY_SECRET}
 
 # The `functions` block defines what code to deploy
 functions:
