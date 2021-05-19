@@ -36,7 +36,8 @@ module.exports.pathParamsExample = (event, context, callback) => {
     statusCode: 200,
     headers: {
       'Content-Type': 'text/html',
-      /*'Access-Control-Allow-Origin': '*', // Required for CORS support to work*/
+      'Access-Control-Allow-Origin': '*', // Required for CORS support to work*/
+      'Access-Control-Allow-Credentials': true,
     },
     body: generateHtmlPage(helloParagraph)
   });

@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/using-dynamic-content/dev/1621385556597-2021-05-19T00:52:36.597Z/using-dynamic-content.zip"
+          "S3Key": "serverless/using-dynamic-content/dev/1621386632587-2021-05-19T01:10:32.587Z/using-dynamic-content.zip"
         },
         "Handler": "handler.queryParamsExample",
         "Runtime": "nodejs12.x",
@@ -192,7 +192,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/using-dynamic-content/dev/1621385556597-2021-05-19T00:52:36.597Z/using-dynamic-content.zip"
+          "S3Key": "serverless/using-dynamic-content/dev/1621386632587-2021-05-19T01:10:32.587Z/using-dynamic-content.zip"
         },
         "Handler": "handler.pathParamsExample",
         "Runtime": "nodejs12.x",
@@ -210,24 +210,24 @@
         "PathParamsExampleLogGroup"
       ]
     },
-    "QueryParamsExampleLambdaVersionxZjZgRZlstCxZ3i7DxkHj7Dqz6n4CUcVZvPBD2I310": {
+    "QueryParamsExampleLambdaVersionZ3lbuLTeNHZBqj9IQjN63Ise9wBPupvx4ImtLjA9Js": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "QueryParamsExampleLambdaFunction"
         },
-        "CodeSha256": "IDvAX1SucSU5F+VE3YPbm+f49OoP0VHg9sK6IEqqZmc="
+        "CodeSha256": "wGlr8uN+344wWVZbXd4aLnay6hNWvijz62hfsoHCBE8="
       }
     },
-    "PathParamsExampleLambdaVersionAgvx2REFRijjh3M2gyNIM2iwEgkheTsGmB4ihSfUk": {
+    "PathParamsExampleLambdaVersiondENXmFaEGHSnunUad5SrH6NGtoGZ92RAvWIuABJn40": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "PathParamsExampleLambdaFunction"
         },
-        "CodeSha256": "IDvAX1SucSU5F+VE3YPbm+f49OoP0VHg9sK6IEqqZmc="
+        "CodeSha256": "wGlr8uN+344wWVZbXd4aLnay6hNWvijz62hfsoHCBE8="
       }
     },
     "ApiGatewayRestApi": {
@@ -267,6 +267,99 @@
           ]
         },
         "PathPart": "{name}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodNameVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceNameVar"
+        },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -404,7 +497,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1621385554698": {
+    "ApiGatewayDeployment1621386630578": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -413,6 +506,8 @@
         "StageName": "dev"
       },
       "DependsOn": [
+        "ApiGatewayMethodOptions",
+        "ApiGatewayMethodNameVarOptions",
         "ApiGatewayMethodHelloGet",
         "ApiGatewayMethodGet",
         "ApiGatewayMethodNameVarGet"
@@ -505,7 +600,7 @@
     "QueryParamsExampleLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "QueryParamsExampleLambdaVersionxZjZgRZlstCxZ3i7DxkHj7Dqz6n4CUcVZvPBD2I310"
+        "Ref": "QueryParamsExampleLambdaVersionZ3lbuLTeNHZBqj9IQjN63Ise9wBPupvx4ImtLjA9Js"
       },
       "Export": {
         "Name": "sls-using-dynamic-content-dev-QueryParamsExampleLambdaFunctionQualifiedArn"
@@ -514,7 +609,7 @@
     "PathParamsExampleLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "PathParamsExampleLambdaVersionAgvx2REFRijjh3M2gyNIM2iwEgkheTsGmB4ihSfUk"
+        "Ref": "PathParamsExampleLambdaVersiondENXmFaEGHSnunUad5SrH6NGtoGZ92RAvWIuABJn40"
       },
       "Export": {
         "Name": "sls-using-dynamic-content-dev-PathParamsExampleLambdaFunctionQualifiedArn"

@@ -29,6 +29,8 @@ functions:
       - http:
           path: /
           method: get 
+          cors: true
       - http:
           path: /{name}
           method: get
+          cors: true
