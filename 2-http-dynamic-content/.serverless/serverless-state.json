@@ -1,13 +1,12 @@
 {
   "service": {
-    "service": "my-test-service",
+    "service": "using-dynamic-content",
     "serviceObject": {
-      "name": "my-test-service"
+      "name": "using-dynamic-content"
     },
     "provider": {
       "name": "aws",
       "runtime": "nodejs12.x",
-      "lambdaHashingVersion": "20201221",
       "stage": "dev",
       "variableSyntax": "\\${([^{}:]+?(?:\\(|:)(?:[^:{}][^{}]*?)?)}",
       "region": "us-east-1",
@@ -85,10 +84,16 @@
               }
             }
           },
-          "HelloLogGroup": {
+          "QueryParamsExampleLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/my-test-service-dev-hello"
+              "LogGroupName": "/aws/lambda/using-dynamic-content-dev-queryParamsExample"
+            }
+          },
+          "PathParamsExampleLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/using-dynamic-content-dev-pathParamsExample"
             }
           },
           "IamRoleLambdaExecution": {
@@ -116,7 +121,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "my-test-service",
+                        "using-dynamic-content",
                         "dev",
                         "lambda"
                       ]
@@ -133,7 +138,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/my-test-service-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/using-dynamic-content-dev*:*"
                           }
                         ]
                       },
@@ -144,7 +149,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/my-test-service-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/using-dynamic-content-dev*:*:*"
                           }
                         ]
                       }
@@ -157,7 +162,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "my-test-service",
+                    "using-dynamic-content",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -168,18 +173,18 @@
               }
             }
           },
-          "HelloLambdaFunction": {
+          "QueryParamsExampleLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/my-test-service/dev/1620959303375-2021-05-14T02:28:23.375Z/my-test-service.zip"
+                "S3Key": "serverless/using-dynamic-content/dev/1621385556597-2021-05-19T00:52:36.597Z/using-dynamic-content.zip"
               },
-              "Handler": "handler.hello",
+              "Handler": "handler.queryParamsExample",
               "Runtime": "nodejs12.x",
-              "FunctionName": "my-test-service-dev-hello",
+              "FunctionName": "using-dynamic-content-dev-queryParamsExample",
               "MemorySize": 1024,
               "Timeout": 6,
               "Role": {
@@ -190,23 +195,58 @@
               }
             },
             "DependsOn": [
-              "HelloLogGroup"
+              "QueryParamsExampleLogGroup"
             ]
           },
-          "HelloLambdaVersioni1GwkAKxMHFrtst2FrmJOJMZzs60lEVnrbQhDms": {
+          "PathParamsExampleLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/using-dynamic-content/dev/1621385556597-2021-05-19T00:52:36.597Z/using-dynamic-content.zip"
+              },
+              "Handler": "handler.pathParamsExample",
+              "Runtime": "nodejs12.x",
+              "FunctionName": "using-dynamic-content-dev-pathParamsExample",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "PathParamsExampleLogGroup"
+            ]
+          },
+          "QueryParamsExampleLambdaVersionxZjZgRZlstCxZ3i7DxkHj7Dqz6n4CUcVZvPBD2I310": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "HelloLambdaFunction"
+                "Ref": "QueryParamsExampleLambdaFunction"
               },
-              "CodeSha256": "8tas6Uff2nBLw/JegptKLoSkjzr9xYAFKWPcvzhNFmk="
+              "CodeSha256": "IDvAX1SucSU5F+VE3YPbm+f49OoP0VHg9sK6IEqqZmc="
+            }
+          },
+          "PathParamsExampleLambdaVersionAgvx2REFRijjh3M2gyNIM2iwEgkheTsGmB4ihSfUk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "PathParamsExampleLambdaFunction"
+              },
+              "CodeSha256": "IDvAX1SucSU5F+VE3YPbm+f49OoP0VHg9sK6IEqqZmc="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-my-test-service",
+              "Name": "dev-using-dynamic-content",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -225,6 +265,21 @@
                 ]
               },
               "PathPart": "hello",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceNameVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "{name}",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -261,7 +316,7 @@
                       ":lambda:path/2015-03-31/functions/",
                       {
                         "Fn::GetAtt": [
-                          "HelloLambdaFunction",
+                          "QueryParamsExampleLambdaFunction",
                           "Arn"
                         ]
                       },
@@ -273,7 +328,96 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1620959298670": {
+          "ApiGatewayMethodGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "PathParamsExampleLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodNameVarGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceNameVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "PathParamsExampleLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1621385554698": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -282,15 +426,54 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodHelloGet"
+              "ApiGatewayMethodHelloGet",
+              "ApiGatewayMethodGet",
+              "ApiGatewayMethodNameVarGet"
             ]
           },
-          "HelloLambdaPermissionApiGateway": {
+          "QueryParamsExampleLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "HelloLambdaFunction",
+                  "QueryParamsExampleLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "PathParamsExampleLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "PathParamsExampleLambdaFunction",
                   "Arn"
                 ]
               },
@@ -329,16 +512,25 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-my-test-service-dev-ServerlessDeploymentBucketName"
+              "Name": "sls-using-dynamic-content-dev-ServerlessDeploymentBucketName"
             }
           },
-          "HelloLambdaFunctionQualifiedArn": {
+          "QueryParamsExampleLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloLambdaVersioni1GwkAKxMHFrtst2FrmJOJMZzs60lEVnrbQhDms"
+              "Ref": "QueryParamsExampleLambdaVersionxZjZgRZlstCxZ3i7DxkHj7Dqz6n4CUcVZvPBD2I310"
             },
             "Export": {
-              "Name": "sls-my-test-service-dev-HelloLambdaFunctionQualifiedArn"
+              "Name": "sls-using-dynamic-content-dev-QueryParamsExampleLambdaFunctionQualifiedArn"
+            }
+          },
+          "PathParamsExampleLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "PathParamsExampleLambdaVersionAgvx2REFRijjh3M2gyNIM2iwEgkheTsGmB4ihSfUk"
+            },
+            "Export": {
+              "Name": "sls-using-dynamic-content-dev-PathParamsExampleLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -364,7 +556,7 @@
               ]
             },
             "Export": {
-              "Name": "sls-my-test-service-dev-ServiceEndpoint"
+              "Name": "sls-using-dynamic-content-dev-ServiceEndpoint"
             }
           }
         }
@@ -455,8 +647,8 @@
     },
     "pluginsData": {},
     "functions": {
-      "hello": {
-        "handler": "handler.hello",
+      "queryParamsExample": {
+        "handler": "handler.queryParamsExample",
         "events": [
           {
             "http": {
@@ -466,13 +658,39 @@
             }
           }
         ],
-        "name": "my-test-service-dev-hello",
+        "name": "using-dynamic-content-dev-queryParamsExample",
         "package": {},
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "HelloLambdaVersioni1GwkAKxMHFrtst2FrmJOJMZzs60lEVnrbQhDms"
+        "versionLogicalId": "QueryParamsExampleLambdaVersionxZjZgRZlstCxZ3i7DxkHj7Dqz6n4CUcVZvPBD2I310"
+      },
+      "pathParamsExample": {
+        "handler": "handler.pathParamsExample",
+        "events": [
+          {
+            "http": {
+              "path": "",
+              "method": "get",
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
+              "path": "{name}",
+              "method": "get",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "using-dynamic-content-dev-pathParamsExample",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "PathParamsExampleLambdaVersionAgvx2REFRijjh3M2gyNIM2iwEgkheTsGmB4ihSfUk"
       }
     },
     "configValidationMode": "warn",
@@ -491,10 +709,10 @@
       }
     },
     "isDashboardMonitoringPreconfigured": false,
-    "artifact": "C:\\Users\\Matthew\\Documents\\Professional\\Job Applications 2021\\Trend Micro\\Learning\\my-test-service\\.serverless\\my-test-service.zip"
+    "artifact": "C:\\Users\\Matthew\\Documents\\Professional\\Job Applications 2021\\Trend Micro\\Learning\\2-http-dynamic-content\\.serverless\\using-dynamic-content.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/my-test-service/dev/1620959303375-2021-05-14T02:28:23.375Z",
-    "artifact": "my-test-service.zip"
+    "artifactDirectoryName": "serverless/using-dynamic-content/dev/1621385556597-2021-05-19T00:52:36.597Z",
+    "artifact": "using-dynamic-content.zip"
   }
 }
