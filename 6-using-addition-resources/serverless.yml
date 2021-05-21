@@ -1,0 +1,55 @@
+# Welcome to serverless. Read the docs
+# https://serverless.com/framework/docs/
+
+# Serverless.yml is the configuration the CLI
+# uses to deploy your code to your provider of choice
+
+# The `service` block is the name of the service
+service: service-6-using-addition-resources
+
+frameworkVersion: '2'
+
+# The `provider` block defines where your service will be deployed
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    MY_TABLE: { Ref: usingAdditionResources }
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:PutItem
+      - dynamodb:Scan
+    Resource: { Fn::GetAtt: [ usingAdditionResources, Arn ] }
+
+# The `functions` block defines what code to deploy
+functions:
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: create
+          method: post
+          cors: true
+  scan:
+    handler: handler.scan
+    events:
+      - http:
+          path: scan
+          method: post
+          cors: true
+resources:
+  Resources:
+    usingAdditionResources:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: 'usingAdditionResources'
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
