@@ -20,6 +20,11 @@ provider:
     Action:
       - dynamodb:PutItem
       - dynamodb:Scan
+      - dynamodb:DeleteItem
+      - dynamodb:GetRecords
+      - dynamodb:GetShardIterator
+      - dynamodb:DescribeStream
+      - dynamodb:ListStreams
     Resource: { Fn::GetAtt: [ usingAdditionResources, Arn ] }
 
 # The `functions` block defines what code to deploy
@@ -38,6 +43,21 @@ functions:
           path: scan
           method: post
           cors: true
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+          path: delete
+          method: post
+          cors: true
+  handleStream:
+    handler: handler.dynamoStreamHandler
+    events:
+      - stream:
+          type: dynamodb
+          arn: { Fn::GetAtt: [ usingAdditionResources, StreamArn ] }
+          batchSize: 1
+
 resources:
   Resources:
     usingAdditionResources:
@@ -53,6 +73,8 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
 plugins:
   - serverless-manifest-plugin
 

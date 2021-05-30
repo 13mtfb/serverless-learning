@@ -75,3 +75,64 @@ module.exports.scan = (event, context, callback) => {
     return callback(null, response)
   })
 }
+
+// Delete item in DynamoDB table
+module.exports.delete = (event, context, callback) => {
+
+  const body = JSON.parse(event.body)
+  console.log(body)
+  if (!body || !body.id) {
+    return callback(null, {
+      statusCode: 401,
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        error: 'no ID passed for deletion'
+      })
+    })
+  }
+
+  var params = {
+    TableName: process.env.MY_TABLE,
+    Key: {
+      id: body.id,
+    }
+  };
+  
+  dynamoDb.delete(params, (error, result) => {
+    if (error){
+      console.log(error);
+      return callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { 'Content-Type': 'text/plain' },
+        body: 'Couldn\'t delete the todos.',
+      })
+    } 
+    else {
+      console.log(result);
+      // create a response
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: `user ${body.id} deleted`
+        })
+      }
+      return callback(null, response)
+    } 
+  });
+}
+
+/* function to handle items on the dynamoDB stream */
+module.exports.dynamoStreamHandler = (event, context, callback) => {
+  event.Records.forEach((record) => {
+    console.log(record.eventID)
+    console.log(record.eventName)
+    console.log('DynamoDB Record: %j', record.dynamodb)
+    if (record.eventName === 'INSERT') {
+      console.log('INSERT EVENT. DO WELCOME STUFF')
+    }
+    if (record.eventName === 'REMOVE') {
+      console.log('REMOVAL EVENT. DO REMOVAL STUFF')
+    }
+  })
+  return callback(null, `Successfully processed ${event.Records.length} records.`);
+}
